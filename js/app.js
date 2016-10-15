@@ -22,17 +22,17 @@ Enemy.prototype.update = function(dt) {
     this.x += this.speed * dt;
 
     if (this.x > ctx.canvas.width){
-      this.x = -100; // enemy initial position
+      this.x = -100; // enemy initial x position
       this.speed = Math.random() * (300 - 100) + 100; // Max speed: 300, min speed: 100
     }
-
 };
 
+// Method to detect when the enemy and the player touch each other.  If so, the player
+// alive attribute is change to false.
 Enemy.prototype.collisionDetect = function (enemyObj) {
   if (enemyObj.x < player.x + player.width &&
       enemyObj.x + enemyObj.width > player.x &&
       enemyObj.y === player.y) {
-  // reset player position
     player.alive = false;
   }
 };
@@ -45,27 +45,24 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-
 var Player = function() {
   this.sprite = 'images/char-boy.png';
-  this.startingPointX = 200;
-  this.startingPointY = 400;
-  this.x = this.startingPointX;
-  this.y = this.startingPointY;
+  this.reset();
   this.width = 75;
   this.alive = true;
   this.speed = Math.random() * (300 - 100) + 100;
 };
 
+
 Player.prototype.update = function(dt){
+  // In case of touch an enemy the player is reset to original position
   if (this.alive === false) {
-    while (this.y <= this.startingPointY) {
-      this.y += 100 * dt;
-      console.log(this.y);
+      this.reset();
+      this.alive = true;
     }
-    // this.x = this.startingPointX;
-    // this.y = this.startingPointY;
-    this.alive = true;
+  // In case of winning the player is reset to original position
+  if (this.y == winning_area) {
+    this.reset();
   }
 };
 
@@ -106,16 +103,19 @@ Player.prototype.handleInput = function(key_pressed) {
   }
 };
 
+Player.prototype.reset = function() {
+  this.x =  200;
+  this.y = 400;
+};
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
 var allEnemies = [];
 var player = new Player();
 
 
-// Create three enemies
+// Create three enemies, one for each row.
 for (var i = 0; i < 3; i++) {
   // Assign an enemy for each row.
   switch (i) {
@@ -135,6 +135,7 @@ for (var i = 0; i < 3; i++) {
 // Global Variables
 var block_width = 100;
 var block_height = 82;
+var winning_area = -10; // "y" area for winning (water)
 
 
 
