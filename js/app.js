@@ -51,18 +51,29 @@ var Player = function() {
   this.width = 75;
   this.alive = true;
   this.speed = Math.random() * (300 - 100) + 100;
+  this.times_touched = 0;
 };
 
 
 Player.prototype.update = function(dt){
-  // In case of touch an enemy the player is reset to original position
+  // In case of one enemy touch the player this is reset to original position
   if (this.alive === false) {
       this.reset();
       this.alive = true;
+      //increment times_touched by one.
+      this.times_touched += 1;
     }
   // In case of winning the player is reset to original position
-  if (this.y == winning_area) {
+  if (this.y == WINNING_AREA) {
     this.reset();
+  }
+
+  // In case player is touched three times, the game stop
+  if (this.times_touched == 3){
+    // window.cancelAnimationFrame(Engine.main);
+    game_over();
+    this.times_touched = 0;
+
   }
 };
 
@@ -76,28 +87,28 @@ Player.prototype.handleInput = function(key_pressed) {
       if (this.x === 0) {
         this.x = this.x;
       } else {
-        this.x -= block_width;
+        this.x -= BLOCK_WIDHT;
       }
       break;
     case 'right':
       if (this.x === 400) {
         this.x = this.x;
       } else {
-        this.x += block_width;
+        this.x += BLOCK_WIDHT;
       }
       break;
     case 'up':
       if (this.y === -10) {
         this.y = this.y;
       } else {
-        this.y -= block_height;
+        this.y -= BLOCK_HEIGHT;
       }
       break;
     case 'down':
       if (this.y == 400) {
         this.y = this.y;
       } else {
-        this.y += block_height;
+        this.y += BLOCK_HEIGHT;
       }
         break;
   }
@@ -132,12 +143,22 @@ for (var i = 0; i < 3; i++) {
   allEnemies.push(new Enemy(-100, row));
 }
 
-// Global Variables
-var block_width = 100;
-var block_height = 82;
-var winning_area = -10; // "y" area for winning (water)
+// Constant Values
+var BLOCK_WIDHT = 100;
+var BLOCK_HEIGHT = 82;
+var WINNING_AREA = -10; // "y" area for winning (water)
 
-
+var game_over = function(){
+  var message = "Game Over";
+  console.log(message);
+  ctx.fillStyle = "white";
+  ctx.strokeStyle = "black";
+  ctx.font = "30pt Impact";
+  ctx.textAlign = "center";
+  ctx.lineWidth = 3;
+  ctx.fillText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
+  ctx.strokeText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
