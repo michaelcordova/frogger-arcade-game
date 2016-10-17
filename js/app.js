@@ -18,13 +18,17 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.collisionDetect(this);
+
     this.x += this.speed * dt;
 
     if (this.x > ctx.canvas.width){
       this.x = -100; // enemy initial x position
       this.speed = Math.random() * (300 - 100) + 100; // Max speed: 300, min speed: 100
     }
+
+    // Check for collision
+    this.collisionDetect(this);
+
 };
 
 // Method to detect when the enemy and the player touch each other.  If so, the player
@@ -60,7 +64,7 @@ Player.prototype.update = function(){
   if (this.alive === false) {
       this.reset();
       this.alive = true;
-      //increment times_touched by one.
+      // Increase times_touched by one.
       this.times_touched += 1;
     }
   // In case of winning the player is reset to original position
@@ -71,8 +75,6 @@ Player.prototype.update = function(){
 
   // In case player is touched three times, the game stop
   if (this.times_touched == 3){
-    // window.cancelAnimationFrame(Engine.main);
-    // Game_Over();
     alert("GAME OVER!!!");
     document.location.reload();
     this.times_touched = 0;
@@ -116,6 +118,7 @@ Player.prototype.handleInput = function(key_pressed) {
   }
 };
 
+// Reset set original x and y player's position
 Player.prototype.reset = function() {
   this.x =  200;
   this.y = 400;
