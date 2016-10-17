@@ -55,7 +55,7 @@ var Player = function() {
 };
 
 
-Player.prototype.update = function(dt){
+Player.prototype.update = function(){
   // In case of one enemy touch the player this is reset to original position
   if (this.alive === false) {
       this.reset();
@@ -71,9 +71,10 @@ Player.prototype.update = function(dt){
   // In case player is touched three times, the game stop
   if (this.times_touched == 3){
     // window.cancelAnimationFrame(Engine.main);
-    game_over();
+    // Game_Over();
+    alert("GAME OVER!!!");
+    document.location.reload();
     this.times_touched = 0;
-
   }
 };
 
@@ -148,7 +149,9 @@ var BLOCK_WIDHT = 100;
 var BLOCK_HEIGHT = 82;
 var WINNING_AREA = -10; // "y" area for winning (water)
 
-var game_over = function(){
+
+//
+var Game_Over = function(){
   var message = "Game Over";
   console.log(message);
   ctx.fillStyle = "white";
@@ -156,9 +159,14 @@ var game_over = function(){
   ctx.font = "30pt Impact";
   ctx.textAlign = "center";
   ctx.lineWidth = 3;
+  };
+
+Game_Over.prototype.render = function() {
   ctx.fillText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
   ctx.strokeText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
 };
+
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
