@@ -65,6 +65,7 @@ Player.prototype.update = function(){
     }
   // In case of winning the player is reset to original position
   if (this.y == WINNING_AREA) {
+    alert("YOU WIN!!!");
     this.reset();
   }
 
@@ -148,24 +149,6 @@ for (var i = 0; i < 3; i++) {
 var BLOCK_WIDHT = 100;
 var BLOCK_HEIGHT = 82;
 var WINNING_AREA = -10; // "y" area for winning (water)
-
-
-//
-var Game_Over = function(){
-  var message = "Game Over";
-  console.log(message);
-  ctx.fillStyle = "white";
-  ctx.strokeStyle = "black";
-  ctx.font = "30pt Impact";
-  ctx.textAlign = "center";
-  ctx.lineWidth = 3;
-  };
-
-Game_Over.prototype.render = function() {
-  ctx.fillText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
-  ctx.strokeText(message, ctx.canvas.width / 2, ctx.canvas.height / 2);
-};
-
 
 
 // This listens for key presses and sends the keys to your
